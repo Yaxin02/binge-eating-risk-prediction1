@@ -1,47 +1,75 @@
-🧠 Binge Eating Risk Prediction
-This project is an end-to-end machine learning application that predicts the risk of binge eating behavior based on patient health and lifestyle data.
+# 🧠 Binge Eating Risk Prediction
 
-🚀 Project Overview
-The goal of this project is to build a supervised machine learning model capable of predicting whether a patient is likely to have binge eating behavior.
+An end-to-end machine learning application for predicting binge eating risk using patient health and lifestyle data, with a **FastAPI backend** and a **React + TypeScript frontend** for interactive real-time prediction.
 
-The system includes:
+---
 
-Data preprocessing and model training
-Model evaluation and selection
-Backend API using FastAPI
-Frontend web interface using React + TypeScript
-Real-time prediction system
-📊 Dataset
-The dataset contains patient-related features such as:
+## 🚀 Project Overview
 
-Age
-Gender
-BMI
-Weight
-Waist circumference
-Education level
-Alcohol consumption
-Type 2 Diabetes (T2D)
-Sleep apnea syndrome
-Gastroesophageal reflux disease
-EDE-Q score
-🤖 Machine Learning
-Models Used
-Logistic Regression
-Random Forest
-Final Model
-✅ Random Forest (selected due to better performance)
-Evaluation Metrics
-Accuracy
-ROC-AUC Score
-Precision / Recall / F1-score
-⚠️ Important Note
-Some columns were removed to avoid data leakage, ensuring that the model only uses information available before prediction.
+This project aims to build a supervised machine learning system capable of predicting whether a patient is at risk of binge eating behavior.
 
-🖥️ Backend (FastAPI)
-The backend exposes a REST API for prediction.
+The project covers the full pipeline:
 
-Run Backend
-cd backend
-pip install -r requirements.txt
-uvicorn main:app --reload
+- data exploration and preprocessing
+- model training and comparison
+- model evaluation and final model selection
+- backend API development with FastAPI
+- frontend interface development with React + TypeScript
+- real-time prediction workflow
+
+---
+
+## 🎯 Objectives
+
+- analyze patient-related health and lifestyle data
+- preprocess data for supervised learning
+- compare multiple machine learning models
+- evaluate performance using relevant metrics
+- select the best-performing model
+- integrate the trained model into a backend API
+- provide a user-friendly frontend for prediction
+
+---
+
+## 🛠️ Tech Stack
+
+### 📊 Machine Learning & Data
+- Python
+- Pandas
+- NumPy
+- Scikit-learn
+- Joblib
+- Jupyter Notebook
+
+### ⚙️ Backend
+- FastAPI
+- Uvicorn
+
+### 🌐 Frontend
+- React
+- TypeScript
+- Vite
+
+---
+
+## 📊 Dataset
+
+The dataset contains patient-related clinical and lifestyle features relevant to binge eating risk prediction.
+
+### 📌 Input Features
+- Age
+- Gender
+- BMI
+- Weight
+- Waist circumference
+- Education level
+- Alcohol consumption
+- Type 2 Diabetes (T2D)
+- Sleep apnea syndrome
+- Gastroesophageal reflux disease
+- EDE-Q score
+
+Dataset location:
+
+```text
+data/data.xlsx
