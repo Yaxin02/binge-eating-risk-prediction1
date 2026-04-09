@@ -1,4 +1,5 @@
 from typing import Literal
+import os
 
 import joblib
 import pandas as pd
@@ -16,7 +17,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-MODEL_PATH = "binge_eating_model.joblib"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, "model", "binge_eating_model.joblib")
 model = joblib.load(MODEL_PATH)
 
 FEATURE_COLUMNS = [
