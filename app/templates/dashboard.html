@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDE-Q Admin Dashboard</title>
+    <link rel="icon" type="image/svg+xml" href="https://github.com/lucide-icons/lucide/raw/refs/heads/main/icons/brain-circuit.svg">
+    <style>
+        :root {
+            --bg-left: #f5f7fc;
+            --bg-right: #eef8fb;
+            --card: rgba(255, 255, 255, 0.88);
+            --border: rgba(209, 218, 235, 0.9);
+            --text: #17233b;
+            --muted: #6c7a96;
+            --primary-1: #2d6df6;
+            --primary-2: #7b35f0;
+            --shadow: 0 20px 50px rgba(31, 41, 55, 0.08);
+            --low-bg: #eaf8ef;
+            --low-text: #1f7a3f;
+            --moderate-bg: #fff5df;
+            --moderate-text: #9a6b00;
+            --high-bg: #fdecec;
+            --high-text: #b42318;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Inter, Arial, sans-serif;
+            color: var(--text);
+            background: linear-gradient(90deg, var(--bg-left) 0%, #f8f5fb 48%, var(--bg-right) 100%);
+        }
+
+        .page {
+            min-height: 100vh;
+            padding: 30px 18px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .glass-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 26px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            padding: 26px;
+            margin-bottom: 22px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #efe7ff;
+            color: #6c3cf0;
+            padding: 10px 16px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .hero-title {
+            margin: 0;
+            font-size: 42px;
+            font-weight: 900;
+            text-align: center;
+            letter-spacing: -1px;
+        }
+
+        .hero-desc {
+            text-align: center;
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.8;
+            margin: 16px auto 26px;
+            max-width: 760px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.72);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .label {
+            font-size: 14px;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+
+        .value {
+            font-size: 28px;
+            font-weight: 900;
+        }
+
+        .latest-box {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.72);
+            border: 1px solid var(--border);
+            line-height: 1.9;
+        }
+
+        .risk-pill {
+            display: inline-block;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-weight: 800;
+            font-size: 13px;
+        }
+
+        .risk-low {
+            background: var(--low-bg);
+            color: var(--low-text);
+        }
+
+        .risk-moderate {
+            background: var(--moderate-bg);
+            color: var(--moderate-text);
+        }
+
+        .risk-high {
+            background: var(--high-bg);
+            color: var(--high-text);
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 24px;
+        }
+
+        .btn {
+            text-decoration: none;
+            border-radius: 16px;
+            padding: 14px 18px;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+        }
+
+        .btn-primary {
+            color: white;
+            background: linear-gradient(90deg, var(--primary-1), var(--primary-2));
+            box-shadow: 0 14px 28px rgba(87, 84, 232, 0.24);
+        }
+
+        .btn-secondary {
+            color: var(--text);
+            border: 1px solid var(--border);
+            background: white;
+        }
+
+        @media (max-width: 850px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-title {
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+    <div class="container">
+        <div class="glass-card" style="text-align:center;">
+            <div class="badge">🛡️ Admin Panel</div>
+            <h1 class="hero-title">EDE-Q Dashboard</h1>
+            <p class="hero-desc">
+                Simple admin dashboard for saved EDE-Q submissions and screening results.
+            </p>
+
+            <div class="cards">
+                <div class="stat-card">
+                    <div class="label">Total Records</div>
+                    <div class="value">{{ total_records }}</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="label">Latest Score</div>
+                    <div class="value">
+                        {{ latest_record.score if latest_record else "No data" }}
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="label">Latest Risk Level</div>
+                    <div class="value" style="font-size:20px;">
+                        {% if latest_record %}
+                            {% if latest_record.level == "Low Risk" %}
+                                <span class="risk-pill risk-low">{{ latest_record.level }}</span>
+                            {% elif latest_record.level == "Moderate Risk" %}
+                                <span class="risk-pill risk-moderate">{{ latest_record.level }}</span>
+                            {% else %}
+                                <span class="risk-pill risk-high">{{ latest_record.level }}</span>
+                            {% endif %}
+                        {% else %}
+                            No data
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="latest-box">
+                {% if latest_record %}
+                    <strong>Latest Record</strong><br>
+                    ID: {{ latest_record.id }}<br>
+                    Score: {{ latest_record.score }}<br>
+                    Level:
+                    {% if latest_record.level == "Low Risk" %}
+                        <span class="risk-pill risk-low">{{ latest_record.level }}</span>
+                    {% elif latest_record.level == "Moderate Risk" %}
+                        <span class="risk-pill risk-moderate">{{ latest_record.level }}</span>
+                    {% else %}
+                        <span class="risk-pill risk-high">{{ latest_record.level }}</span>
+                    {% endif %}
+                    <br>
+                    Date: {{ latest_record.created_at }}
+                {% else %}
+                    No records saved yet.
+                {% endif %}
+            </div>
+
+            <div class="actions">
+                <a class="btn btn-primary" href="/">Back to Calculator</a>
+                <a class="btn btn-secondary" href="/records">View Records</a>
+                <a class="btn btn-secondary" href="/download-records">Download CSV</a>
+                <a class="btn btn-secondary" href="/admin-logout">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
