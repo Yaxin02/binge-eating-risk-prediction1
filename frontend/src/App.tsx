@@ -64,9 +64,9 @@ function App() {
       setError("");
       setResult(null);
 
-      // Execute ML model Cloud Function
+      const functionId = await resolveAppwriteFunctionId();
       const response = await functions.createExecution(
-        APPWRITE_FUNCTION_ID,
+        functionId,
         JSON.stringify(form)
       );
 

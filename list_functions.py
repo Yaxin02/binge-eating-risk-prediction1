@@ -47,9 +47,10 @@ def main() -> int:
         print(f"{fid}\t{name}")
 
     print(
-        "\nIn Appwrite Console → your Site → Environment variables, add:\n"
-        "  VITE_APPWRITE_FUNCTION_ID = <id from first column>\n"
-        "Then redeploy the site.",
+        "\nUse that id as:\n"
+        "  - frontend/public/appwrite-overrides.json → \"functionId\"\n"
+        "  - or Site / CI env: VITE_APPWRITE_FUNCTION_ID\n"
+        "Deploy the function from this repo: python scripts/deploy_predict_function.py\n",
         file=sys.stderr,
     )
     return 0
