@@ -3,9 +3,12 @@ from appwrite.client import Client
 from appwrite.services.databases import Databases
 
 client = Client()
-client.set_endpoint('https://nyc.cloud.appwrite.io/v1')
-client.set_project('69d8f483003b02a74713')
-client.set_key('standard_43cb9ed0354adc2682adf564ba9ae9c46d7b3fecdd701429568cddcce9a7ffd33a581ce09807ab7b5eda90e53fa6ae0b39181aed2ab58a4811b8cf7c0c617c7d07d73995d77604eb4a5107a1bd69c4ce912f6ab715056c7ed9b6f1e85131b9b75cbdfcfec0f4755f0ea1bfe343703eafa2a4138d0c1bb4e0acad058a30509aff')
+client.set_endpoint(os.environ.get("APPWRITE_ENDPOINT", "https://nyc.cloud.appwrite.io/v1"))
+client.set_project(os.environ.get("APPWRITE_PROJECT_ID", "69d8f483003b02a74713"))
+_api_key = os.environ.get("APPWRITE_API_KEY")
+if not _api_key:
+    raise SystemExit("Set APPWRITE_API_KEY (server-only; never put this in the frontend).")
+client.set_key(_api_key)
 
 databases = Databases(client)
 
