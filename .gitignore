@@ -57,3 +57,10 @@ package-lock.json
 *.jpeg
 *.pdf
 app/predictions.db
+
+.env
+.env.*
+__pycache__/
+.ipynb_checkpoints/
+.vscode/
+*.log
