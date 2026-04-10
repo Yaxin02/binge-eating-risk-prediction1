@@ -1,7 +1,14 @@
 import "./App.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { functions, databases, ID, APPWRITE_FUNCTION_ID, APPWRITE_DATABASE_ID, APPWRITE_COLLECTION_ID } from "./appwrite";
+import {
+  functions,
+  databases,
+  ID,
+  resolveAppwriteFunctionId,
+  APPWRITE_DATABASE_ID,
+  APPWRITE_COLLECTION_ID,
+} from "./appwrite";
 
 type FormData = {
   age: number;
@@ -102,7 +109,17 @@ function App() {
       setResult(data);
     } catch (err) {
       console.error(err);
-      setError("Could not connect to Appwrite Function or get a prediction.");
+      const notFound =
+        err &&
+        typeof err === "object" &&
+        "message" in err &&
+        typeof (err as { message: unknown }).message === "string" &&
+        (err as { message: string }).message.includes("could not be found");
+      setError(
+        notFound
+          ? "No Appwrite function matches this ID. In Appwrite Console open Functions, copy the Function ID, put it in public/appwrite-overrides.json as functionId, redeploy, or set VITE_APPWRITE_FUNCTION_ID for the site build."
+          : "Could not connect to Appwrite Function or get a prediction."
+      );
     } finally {
       setLoading(false);
     }
