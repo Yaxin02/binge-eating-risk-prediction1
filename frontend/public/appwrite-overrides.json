@@ -1,4 +1,4 @@
 {
-  "_comment": "Appwrite Console → Functions → your ML function → copy Function ID into functionId below, then redeploy the site.",
-  "functionId": ""
+  "_comment": "Cloud function id (default predict). Override if your project uses a different id.",
+  "functionId": "predict"
 }

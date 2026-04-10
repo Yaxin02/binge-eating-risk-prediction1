@@ -1,19 +1,21 @@
 {
-  "projectId": "69d8f483003b02a74713",
-  "projectName": "Binge Eating",
-  "functions": [
-    {
-      "$id": "predict",
-      "name": "Prediction ML",
-      "runtime": "python-3.10",
-      "execute": ["any"],
-      "events": [],
-      "schedule": "",
-      "timeout": 15,
-      "path": "appwrite_functions/prediction",
-      "entrypoint": "main.py",
-      "commands": "pip install -r requirements.txt",
-      "ignore": []
-    }
-  ]
+    "projectId": "69d8f483003b02a74713",
+    "projectName": "Binge Eating",
+    "functions": [
+        {
+            "$id": "predict",
+            "name": "Prediction ML",
+            "runtime": "python-ml-3.11",
+            "execute": [
+                "any"
+            ],
+            "events": [],
+            "schedule": "",
+            "timeout": 60,
+            "path": "appwrite_functions/prediction",
+            "entrypoint": "main.py",
+            "commands": "pip install -r requirements.txt",
+            "ignore": []
+        }
+    ]
 }
