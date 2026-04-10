@@ -1,13 +1,26 @@
 import os
-from flask import Flask, render_template, request
-from database import db
-from models import EDEQSubmission
 import csv
 import io
-from flask import Flask, render_template, request, Response
-from flask import Flask, render_template, request, redirect, url_for, session
+
+from flask import (
+    Flask,
+    render_template,
+    request,
+    Response,
+    redirect,
+    url_for,
+    session,
+)
+from dotenv import load_dotenv
+
+from database import db
+from models import EDEQSubmission
+
+load_dotenv()
+
 app = Flask(__name__)
-app.secret_key = "yassin_demo_secret_key"
+
+app.secret_key = os.getenv("SECRET_KEY", "yassin_demo_secret_key")
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 db_path = os.path.join(basedir, "predictions.db")
@@ -23,7 +36,12 @@ with app.app_context():
 
 @app.route("/")
 def home():
-    return render_template("index.html", score=None, level=None, error=None)
+    return render_template(
+        "index.html",
+        score=None,
+        level=None,
+        error=None
+    )
 
 
 @app.route("/predict", methods=["POST"])
@@ -65,7 +83,12 @@ def predict():
             score=score,
             level=level,
             error=None,
-            q1=q1, q2=q2, q3=q3, q4=q4, q5=q5, q6=q6
+            q1=q1,
+            q2=q2,
+            q3=q3,
+            q4=q4,
+            q5=q5,
+            q6=q6
         )
 
     except Exception as e:
@@ -81,6 +104,8 @@ def predict():
 def records():
     rows = EDEQSubmission.query.order_by(EDEQSubmission.created_at.desc()).all()
     return render_template("records.html", rows=rows)
+
+
 @app.route("/download-records")
 def download_records():
     rows = EDEQSubmission.query.order_by(EDEQSubmission.created_at.desc()).all()
@@ -89,8 +114,16 @@ def download_records():
     writer = csv.writer(output)
 
     writer.writerow([
-        "ID", "Q1", "Q2", "Q3", "Q4", "Q5", "Q6",
-        "Score", "Level", "Created At"
+        "ID",
+        "Q1",
+        "Q2",
+        "Q3",
+        "Q4",
+        "Q5",
+        "Q6",
+        "Score",
+        "Level",
+        "Created At",
     ])
 
     for row in rows:
@@ -104,7 +137,7 @@ def download_records():
             row.q6,
             row.score,
             row.level,
-            row.created_at
+            row.created_at,
         ])
 
     csv_data = output.getvalue()
@@ -113,8 +146,12 @@ def download_records():
     return Response(
         csv_data,
         mimetype="text/csv",
-        headers={"Content-Disposition": "attachment; filename=edeq_records.csv"}
+        headers={
+            "Content-Disposition": "attachment; filename=edeq_records.csv"
+        },
     )
+
+
 @app.route("/admin-login", methods=["GET", "POST"])
 def admin_login():
     error = None
@@ -123,7 +160,10 @@ def admin_login():
         username = request.form.get("username")
         password = request.form.get("password")
 
-        if username == "yassin" and password == "123":
+        admin_username = os.getenv("ADMIN_USERNAME", "yassin")
+        admin_password = os.getenv("ADMIN_PASSWORD", "123")
+
+        if username == admin_username and password == admin_password:
             session["admin_logged_in"] = True
             return redirect(url_for("dashboard"))
         else:
@@ -136,6 +176,8 @@ def admin_login():
 def admin_logout():
     session.pop("admin_logged_in", None)
     return redirect(url_for("admin_login"))
+
+
 @app.route("/dashboard")
 def dashboard():
     if not session.get("admin_logged_in"):
@@ -148,8 +190,10 @@ def dashboard():
     return render_template(
         "dashboard.html",
         total_records=total_records,
-        latest_record=latest_record
+        latest_record=latest_record,
+        rows=rows,
     )
+
 
 if __name__ == "__main__":
     app.run(debug=True)
