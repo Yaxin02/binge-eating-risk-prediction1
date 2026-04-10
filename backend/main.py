@@ -1,17 +1,18 @@
 from typing import Literal
 import os
-import csv
-import io
 
 import joblib
 import pandas as pd
+from database import Base, engine, SessionLocal
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
 from database import Base, engine, SessionLocal
 from models import BingePrediction
+import csv
+import io
+from fastapi.responses import StreamingResponse
 
 app = FastAPI(title="Binge Eating Predictor API")
 

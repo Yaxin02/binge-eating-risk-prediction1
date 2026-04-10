@@ -3,3 +3,9 @@ numpy
 matplotlib
 scikit-learn
 openpyxl
+fastapi
+uvicorn
+sqlalchemy
+pydantic
+joblib
+python-multipart
